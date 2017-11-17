@@ -1,3 +1,8 @@
+# Our Best Score is:
+
+
+
+
 ---
 title: "final_report"
 output: html_document
@@ -11,13 +16,13 @@ output: html_document
 # R markdown for majority vote
 ## setup
 ```{r setup}
-knitr::opts_knit$set(root.dir = 'C:/Users/àçéòã/Desktop/data science/ass2/prediction1')
+knitr::opts_knit$set(root.dir = 'C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/prediction1')
 getwd()
 ```
 
 ## read train.csv into dataframe
 ```{r}
-df <- read.csv("C:/Users/àçéòã/Desktop/data science/ass2/Titanic/train.csv",na.strings = "")
+df <- read.csv("C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/Titanic/train.csv",na.strings = "")
 ```
 
 ## using str to identify data types
@@ -104,7 +109,7 @@ plot(fit.gbm)
 
 ## load the test file, with na as ""
 ```{r}
-new_df <-read.csv('C:/Users/àçéòã/Desktop/data science/ass2/Titanic/test.csv',na.strings = "")
+new_df <-read.csv('C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/Titanic/test.csv',na.strings = "")
 ```
 
 
@@ -157,7 +162,7 @@ plot(new_df$pred_majority)
 
 ```{r}
 res <- cbind(PassengerId=ids,Survived=as.character(new_df$pred_majority))
-write.csv(res,file="C:/Users/àçéòã/Desktop/data science/ass2/prediction1/output4.csv",row.names = F)
+write.csv(res,file="C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/prediction1/output4.csv",row.names = F)
 ```
 
 
@@ -186,13 +191,13 @@ output: html_document
 # R markdown for naive-bayes algorhitm
 ## setup
 ```{r setup}
-knitr::opts_knit$set(root.dir = 'C:/Users/àçéòã/Desktop/data science/ass2/prediction2')
+knitr::opts_knit$set(root.dir = 'C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/prediction2')
 getwd()
 ```
 
 ## read train.csv into dataframe
 ```{r}
-df <- read.csv("C:/Users/àçéòã/Desktop/data science/ass2/Titanic/train.csv",na.strings = "")
+df <- read.csv("C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/Titanic/train.csv",na.strings = "")
 ```
 
 ## using str to identify data types
@@ -289,7 +294,7 @@ mean(nb_test_predict==test$Survived)
 
 ## load the test file, with na as ""
 ```{r}
-new_df <-read.csv('C:/Users/àçéòã/Desktop/data science/ass2/Titanic/test.csv',na.strings = "")
+new_df <-read.csv('C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/Titanic/test.csv',na.strings = "")
 ```
 
 ## Create a vector with the PassengerIds of records in the test file. 
@@ -325,7 +330,7 @@ new_pred_nb_model<- predict(nb_model,new_df,na.action = na.pass)
 ### Write the *PassengerId* and *Survived* attributes to a csv file.
 ```{r}
 res <- cbind(PassengerId=ids,Survived=as.character(new_pred_nb_model))
-write.csv(res,file="C:/Users/àçéòã/Desktop/data science/ass2/prediction2/output.csv",row.names = F)
+write.csv(res,file="C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/prediction2/output.csv",row.names = F)
 ```
 
 # The preceding description
@@ -355,13 +360,13 @@ output: html_document
 # R markdown for prediction1
 ## setup
 ```{r setup}
-knitr::opts_knit$set(root.dir = 'C:/Users/àçéòã/Desktop/data science/ass2/prediction3')
+knitr::opts_knit$set(root.dir = 'C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/prediction3')
 getwd()
 ```
 
 ## read train.csv into dataframe
 ```{r}
-df <- read.csv("C:/Users/àçéòã/Desktop/data science/ass2/Titanic/train.csv",na.strings = "")
+df <- read.csv("C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/Titanic/train.csv",na.strings = "")
 ```
 
 ## using str to identify data types
@@ -433,7 +438,7 @@ plot(fit.rpart)
 
 ## load the test file, with na as ""
 ```{r}
-new_df <-read.csv('C:/Users/àçéòã/Desktop/data science/ass2/Titanic/test.csv',na.strings = "")
+new_df <-read.csv('C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/Titanic/test.csv',na.strings = "")
 ```
 
 ## Create a vector with the PassengerIds of records in the test file. 
@@ -475,7 +480,7 @@ plot(new_pred_rpart)
 ### Write the *PassengerId* and *Survived* attributes to a csv file.
 ```{r}
 res <- cbind(PassengerId=ids,Survived=as.character(new_pred_rpart))
-write.csv(res,file="C:/Users/àçéòã/Desktop/data science/ass2/prediction3/output.csv",row.names = F)
+write.csv(res,file="C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/prediction3/output.csv",row.names = F)
 ```
 
 
