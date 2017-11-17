@@ -1,6 +1,6 @@
 # Our Best Score is:
 
-
+![Image of github's cat](/Titanic/MyBestScore.png)
 
 
 ---
