@@ -181,7 +181,7 @@ for the cross validation method we chose to use 10 fold cross validations. which
 
 # print screen of the prediction score
 
-![Image of github's cat](/prediction1/score for prediction1.PNG)
+![Image of github's cat](/prediction1/score.PNG)
 
 ---
 title: "naive-bayes algorhitm"
@@ -349,7 +349,7 @@ we didnt need to set some more parameters.
 # code file reference
 
 # print screen of the prediction score
-
+![Image of github's cat](/prediction2/score.PNG)
 
 
 ---
@@ -500,7 +500,7 @@ for the cross validation method we chose to use 10 fold cross validations. which
 # code file reference
 
 # print screen of the prediction score
-
+![Image of github's cat](/prediction3/score.PNG)
 
 
 
