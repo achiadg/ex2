@@ -181,7 +181,7 @@ for the cross validation method we chose to use 10 fold cross validations. which
 
 # print screen of the prediction score
 
-
+![Image of github's cat](/prediction1/score for prediction1.PNG)
 
 ---
 title: "naive-bayes algorhitm"
