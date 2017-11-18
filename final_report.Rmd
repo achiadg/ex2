@@ -75,11 +75,14 @@ library(ggplot2)
 qplot(x=value,data=df_tidy_factors,fill=Survived) + facet_grid(~feature,scales="free")
 ```
 
+
+![Image of github's cat](/prediction1/photo1.PNG)
+
 ## plot for numerical columns
 ```{r}
 qplot(x=value,data=df_tidy_numerics,fill=Survived) + facet_grid(~feature,scales="free")
 ```
-
+![Image of github's cat](/prediction1/photo2.PNG)
 
 ## we trained 3 diffrent models:c5.0 , rpart and gbm, using cross validation control on the data provided.
 ```{r}
@@ -102,16 +105,19 @@ fit.gbm
 ```{r}
 plot(fit.c50)
 ```
+![Image of github's cat](/prediction1/photo3.PNG)
 
 ## show graphical view of our model that show the accuracy according to number of max tree depth.
 ```{r}
 plot(fit.rpart)
 ```
+![Image of github's cat](/prediction1/photo4.PNG)
 
 ## show graphical view of our model that show the accuracy according to the complexity parameter.
 ```{r}
 plot(fit.gbm)
 ```
+![Image of github's cat](/prediction1/photo5.PNG)
 
 ## load the test file, with na as ""
 ```{r}
@@ -163,6 +169,7 @@ new_df$pred_majority<-as.factor(ifelse(new_pred_c50=='1' & new_pred_rpart=='1','
 ```{r}
 plot(new_df$pred_majority)
 ```
+![Image of github's cat](/prediction1/photo6.PNG)
 
 ### Write the *PassengerId* and *Survived* attributes to a csv file.
 
@@ -251,12 +258,15 @@ df_tidy_numerics<-gather(cbind(Survived=df[,1],df[,numerics]),"feature","value",
 library(ggplot2)
 qplot(x=value,data=df_tidy_factors,fill=Survived) + facet_grid(~feature,scales="free")
 ```
-
+![Image of github's cat](/prediction1/photo1.PNG)
 
 ## plot for numerical columns
 ```{r}
 qplot(x=value,data=df_tidy_numerics,fill=Survived) + facet_grid(~feature,scales="free")
 ```
+![Image of github's cat](/prediction1/photo2.PNG)
+
+
 ### Model Creation
 Split the data into train and test sets
 
@@ -422,10 +432,14 @@ library(ggplot2)
 qplot(x=value,data=df_tidy_factors,fill=Survived) + facet_grid(~feature,scales="free")
 ```
 
+![Image of github's cat](/prediction1/photo1.PNG)
+
 ## plot for numerical columns
 ```{r}
 qplot(x=value,data=df_tidy_numerics,fill=Survived) + facet_grid(~feature,scales="free")
 ```
+
+![Image of github's cat](/prediction1/photo2.PNG)
 
 ## we trained the rpart algorithm, using cross validation control on the data provided.
 ```{r}
@@ -444,6 +458,8 @@ fit.rpart
 ```{r}
 plot(fit.rpart)
 ```
+
+![Image of github's cat](/prediction3/photo1.PNG)
 
 ## load the test file, with na as ""
 ```{r}
@@ -485,6 +501,8 @@ new_pred_rpart<- predict(fit.rpart,new_df,na.action = na.pass)
 ```{r}
 plot(new_pred_rpart)
 ```
+
+![Image of github's cat](/prediction3/photo2.PNG)
 
 ### Write the *PassengerId* and *Survived* attributes to a csv file.
 ```{r}
