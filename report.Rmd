@@ -1,0 +1,445 @@
+---
+title: "final_report"
+output: html_document
+---
+
+---
+title: "majority-vote"
+output: html_document
+---
+
+# Our Best Score is:
+
+location:2373
+
+username: achiadg
+
+view: Achiad Gelerenter
+
+![Image of github's cat](/Titanic/MyBestScore.PNG)
+
+
+# The preceding description
+firstly we read train.csv into dataframe and we used str to identify data types and
+convert Survived column and Pclass column to factors, remove unreleavant features from df and from new_df after we read him from test.csv. we also tyded the data and devide him to numerical and factor data sets, in order to see how the diffrent features effects the abbility to survive in the titanic crash.
+
+## R markdown for majority vote
+### setup
+```{r setup}
+knitr::opts_knit$set(root.dir = 'C:/Users/אחיעד/Desktop/data science/ass2/prediction1')
+getwd()
+```
+
+### read train.csv into dataframe
+```{r}
+df <- read.csv("C:/Users/אחיעד/Desktop/data science/ass2/Titanic/train.csv",na.strings = "")
+```
+
+### using str to identify data types
+```{r}
+str(df)
+```
+
+### convert Survived column and Pclass column to factors
+```{r}
+df$Survived<- as.factor(df$Survived)
+df$Pclass<- as.factor(df$Pclass)
+```
+
+### data summary
+```{r}
+summary(df)
+```
+
+### remove features from df
+```{r}
+df <- df[,-c(1,4,9)]
+```
+
+### devide into factors and numerics columns
+```{r}
+cols<- 1:dim(df)[2]
+factors <- cols[sapply(df,is.factor)]
+numerics <- cols[!sapply(df,is.factor)]
+```
+
+### We now tide the data two times: the first is for categorial data and the second for numeric data.
+```{r}
+#install.packages("tidyr")
+library(tidyr)
+df_tidy_factors<-gather(df[,factors],"feature","value", -1)
+df_tidy_numerics<-gather(cbind(Survived=df[,1],df[,numerics]),"feature","value",-1)
+
+```
+
+### plot for factor columns
+```{r}
+#install.packages("ggplot2")
+library(ggplot2)
+qplot(x=value,data=df_tidy_factors,fill=Survived) + facet_grid(~feature,scales="free")
+```
+
+![Image of github's cat](/prediction1/photo1.PNG)
+
+### plot for numerical columns
+```{r}
+qplot(x=value,data=df_tidy_numerics,fill=Survived) + facet_grid(~feature,scales="free")
+```
+
+![Image of github's cat](/prediction1/photo2.PNG)
+
+### load the test file, with na as ""
+```{r}
+new_df <-read.csv('C:/Users/אחיעד/Desktop/data science/ass2/Titanic/test.csv',na.strings = "")
+```
+
+
+# description of the algorithm
+we used the majority votes algorithm which means running diffrent models(in our case 3) to predict if a person will survive the crash , than make our prediction according to the majority prediction of all the models.
+
+
+# process parameter tuning
+we tuned the names of each of the 3 algorhitm we used: c5.0, rpart and gbm using the train method of the caret library. we also used the train method to tune the metric of the model to be "accuracy" which is what we interested in, this metric use the observed accuracy that we predicted.
+for the cross validation method we chose to use 10 fold cross validations. which means in each iteration 1/10 of the records are used as test and all the others as train, in 10 diffrent iterations.and than, the average of those iterations is being picked.
+
+we also used grid in order to tune parameters in each algorithm we used:
+rpart: we tuned the cp(complexity parameter) to be 0.001 ,The complexity parameter (cp) is used to control the size of the decision tree and to select the optimal tree size. 
+
+c5.0:  we used two options for the winnow paraneter that defines if a feature selection will be used, the other parameters are set to 5 boosting trials and a tree model.
+
+gbm: we used 5 trees in depth 6 at the most, with shrinkage 0.1 or 0.3 or 0.5 and with minobsinnode 5 that set the minimum observation in any node of the tree.
+
+after we set all the parameters we trained the 3 algorhitm.
+
+```{r}
+#install.packages("caret")
+#instail.packages("lattice")
+#install.packages("gbm")
+library(caret)
+library(lattice)
+set.seed(13)
+grid1 <- expand.grid(.cp=0.001)
+grid2 <- expand.grid(.winnow = c(TRUE,FALSE),.trials=5, .model='tree')
+grid3 <- expand.grid(.n.trees=c(5),.interaction.depth=6,.shrinkage=c(0.1,0.3,0.5),.n.minobsinnode=5)
+control <- trainControl(method="cv", number=10)
+fit.c50 <- train(Survived~., data=df, method="C5.0", metric="Accuracy", trControl=control,tuneGrid =grid2,na.action = na.pass)
+fit.rpart <- train(Survived~., data=df, method="rpart", metric="Accuracy", trControl=control,tuneGrid =grid1,na.action = na.pass)
+fit.gbm <- train(Survived~., data=df, method="gbm", metric="Accuracy", trControl=control,tuneGrid =grid3,na.action = na.pass)
+```
+
+### show graphical view of our model that show the accuracy according to number of iterations.
+```{r}
+plot(fit.c50)
+```
+
+![Image of github's cat](/prediction1/photo3.PNG)
+
+### show graphical view of our model that show the accuracy according to the complexity parameter.
+```{r}
+plot(fit.rpart)
+```
+
+![Image of github's cat](/prediction3/photo1.PNG)
+
+### show graphical view of our model that show the accuracy according to number of max tree depth.
+```{r}
+plot(fit.gbm)
+```
+
+![Image of github's cat](/prediction1/photo5.PNG)
+
+### Load the test file and predict the target attribute for its records using our 3  trained model. in order to use the majority vote we checked if there are at least 2 models which returns true(1) than our predict is true. else our predict is false(0). 
+
+```{r}
+new_pred_gbm<- predict(fit.gbm,new_df,na.action = na.pass)
+new_pred_rpart<- predict(fit.rpart,new_df,na.action = na.pass)
+new_pred_c50<- predict(fit.c50,new_df,na.action = na.pass)
+
+
+new_df$pred_majority<-as.factor(ifelse(new_pred_c50=='1' & new_pred_rpart=='1','1',ifelse(new_pred_c50=='1' & new_pred_gbm=='1','1',ifelse(new_pred_rpart=='1' & new_pred_gbm=='1','1','0'))))
+
+```
+
+### show how much passengers survived and died according to our model use majority vote decision.
+```{r}
+plot(new_df$pred_majority)
+```
+
+![Image of github's cat](/prediction1/photo6.PNG)
+
+# code file reference and excel file reference
+
+[link to code!](https://github.com/achiadg/ex2/tree/master/prediction1/prediction1.Rmd)
+
+[link to output!](https://github.com/achiadg/ex2/tree/master/prediction1/output.csv)
+
+# print screen of the prediction score
+
+![Image of github's cat](/prediction1/score.PNG)
+
+---
+title: "naive-bayes algorhitm"
+output: html_document
+---
+
+# The preceding description
+firstly we read train.csv into dataframe,we used str to identify data types, we
+convert Survived column and Pclass column to factors,we remove unreleavant features from df and from new_df after we read him from test.csv. we also tyded the data and devide him to numerical and factor data sets, in order to see how the diffrent features effects the abbility to survive in the titanic crash.
+we also split the data into train and test data sets.
+
+## R markdown for majority vote
+### setup
+```{r setup}
+knitr::opts_knit$set(root.dir = 'C:/Users/אחיעד/Desktop/data science/ass2/prediction2')
+getwd()
+```
+
+### read train.csv into dataframe
+```{r}
+df <- read.csv("C:/Users/אחיעד/Desktop/data science/ass2/Titanic/train.csv",na.strings = "")
+```
+
+### using str to identify data types
+```{r}
+str(df)
+```
+
+### convert Survived column and Pclass column to factors
+```{r}
+df$Survived<- as.factor(df$Survived)
+df$Pclass<- as.factor(df$Pclass)
+```
+
+### data summary
+```{r}
+summary(df)
+```
+
+### remove features from df
+```{r}
+df <- df[,-c(1,4,9)]
+```
+
+### devide into factors and numerics columns
+```{r}
+cols<- 1:dim(df)[2]
+factors <- cols[sapply(df,is.factor)]
+numerics <- cols[!sapply(df,is.factor)]
+```
+
+### We now tide the data two times: the first is for categorial data and the second for numeric data.
+```{r}
+#install.packages("tidyr")
+library(tidyr)
+df_tidy_factors<-gather(df[,factors],"feature","value", -1)
+df_tidy_numerics<-gather(cbind(Survived=df[,1],df[,numerics]),"feature","value",-1)
+
+```
+
+### plot for factor columns
+```{r}
+#install.packages("ggplot2")
+library(ggplot2)
+qplot(x=value,data=df_tidy_factors,fill=Survived) + facet_grid(~feature,scales="free")
+```
+
+![Image of github's cat](/prediction1/photo1.PNG)
+
+### plot for numerical columns
+```{r}
+qplot(x=value,data=df_tidy_numerics,fill=Survived) + facet_grid(~feature,scales="free")
+```
+
+![Image of github's cat](/prediction1/photo2.PNG)
+
+### load the test file, with na as ""
+```{r}
+new_df <-read.csv('C:/Users/אחיעד/Desktop/data science/ass2/Titanic/test.csv',na.strings = "")
+```
+
+### Model Creation
+Split the data into train and test sets
+
+```{r}
+rows<- nrow(df)
+indices <- sample(1:rows,rows*0.8)
+train<- df[indices,]
+test<- df[-indices,]
+```
+
+
+# description of the algorithm
+we used the naive bayes algorithm without the caret library and using cross validation.
+firstly we trained our algorhitm on the df data set which we devided to train and test data set , this algorhitm try to compute the probability that a person who survived has the records that are given, against the probability that a person who didnt survived as those records, by referring to each record as independent from the others and choosing by the higher probability.
+
+# process parameter tuning
+while we predict the results on the test data set while training we needed to ignore the first column which is survived, in order to train the model to guess if passenger survived or not.
+because this is basic algorhitm we didnt need to set the method and the metric for the algorhitm.
+we didnt need to set some more parameters.
+
+
+
+### we trained the model:naive bayes, without using the caret library, on the train data set.
+```{r}
+#install.packages('e1071')
+#load e1071 library and invoke naiveBayes method
+library(e1071)
+nb_model <- naiveBayes(Survived~.,data = train)
+nb_model
+```
+
+
+### we predict the naive bayes model on the test data set, in the prediction process we pass the na fields in the data set, because the prediction does not succedd with na fields.
+this prediction is in order to train our model, and to get better results.
+```{r}
+nb_test_predict <- predict(nb_model,test[,-1] ,na.action = na.pass)
+
+```
+
+
+# code file reference and excel file reference
+
+[link to code!](https://github.com/achiadg/ex2/tree/master/prediction2/prediction2.Rmd)
+
+[link to output!](https://github.com/achiadg/ex2/tree/master/prediction2/output.csv)
+
+# print screen of the prediction score
+
+![Image of github's cat](/prediction2/score.PNG)
+
+
+---
+title: "rpart algorhitm"
+output: html_document
+---
+
+# The preceding description
+firstly we read train.csv into dataframe and we used str to identify data types and
+convert Survived column and Pclass column to factors, remove unreleavant features from df and from new_df after we read him from test.csv. we also tyded the data and devide him to numerical and factor data sets, in order to see how the diffrent features effects the abbility to survive in the titanic crash.
+
+## R markdown for majority vote
+### setup
+```{r setup}
+knitr::opts_knit$set(root.dir = 'C:/Users/אחיעד/Desktop/data science/ass2/prediction1')
+getwd()
+```
+
+### read train.csv into dataframe
+```{r}
+df <- read.csv("C:/Users/אחיעד/Desktop/data science/ass2/Titanic/train.csv",na.strings = "")
+```
+
+### using str to identify data types
+```{r}
+str(df)
+```
+
+### convert Survived column and Pclass column to factors
+```{r}
+df$Survived<- as.factor(df$Survived)
+df$Pclass<- as.factor(df$Pclass)
+```
+
+### data summary
+```{r}
+summary(df)
+```
+
+### remove features from df
+```{r}
+df <- df[,-c(1,4,9)]
+```
+
+### devide into factors and numerics columns
+```{r}
+cols<- 1:dim(df)[2]
+factors <- cols[sapply(df,is.factor)]
+numerics <- cols[!sapply(df,is.factor)]
+```
+
+### We now tide the data two times: the first is for categorial data and the second for numeric data.
+```{r}
+#install.packages("tidyr")
+library(tidyr)
+df_tidy_factors<-gather(df[,factors],"feature","value", -1)
+df_tidy_numerics<-gather(cbind(Survived=df[,1],df[,numerics]),"feature","value",-1)
+
+```
+
+### plot for factor columns
+```{r}
+#install.packages("ggplot2")
+library(ggplot2)
+qplot(x=value,data=df_tidy_factors,fill=Survived) + facet_grid(~feature,scales="free")
+```
+
+![Image of github's cat](/prediction1/photo1.PNG)
+
+### plot for numerical columns
+```{r}
+qplot(x=value,data=df_tidy_numerics,fill=Survived) + facet_grid(~feature,scales="free")
+```
+
+![Image of github's cat](/prediction1/photo2.PNG)
+
+### load the test file, with na as ""
+```{r}
+new_df <-read.csv('C:/Users/אחיעד/Desktop/data science/ass2/Titanic/test.csv',na.strings = "")
+```
+
+
+# description of the algorithm
+we used the rpart algorithm with the caret library and using cross validation.
+this algorhitm is the greedy algorithm that constructs decision trees in a top-down recursive divide-and-conquer manner. It takes a subset of data D as input and evaluate all possible splits.The best split decision , i.e. the split with the highest information gain, is chosen to partition the data in two subsets and the method is called recursively. The algorithm stops when the stop conditions are met.
+
+
+# process parameter tuning
+we tuned the names of rpart using the train method of the caret library. we also used the train method to tune the metric of the model to be "Kappa" which is a metric that compares an Observed Accuracy with an Expected Accuracy.
+for the cross validation method we chose to use 10 fold cross validations. which means in each iteration 1/10 of the records are used as test and all the others as train, in 10 diffrent iterations.and than, the average of those iterations is being picked.
+
+we also used grid in order to tune parameters in each algorithm we used:
+we tuned the cp(complexity parameter) to be 0.001 ,The complexity parameter (cp) is used to control the size of the decision tree and to select the optimal tree size.
+
+### we trained the rpart algorithm, using cross validation control on the data provided.
+```{r}
+#install.packages("caret")
+#instail.packages("lattice")
+#install.packages("gbm")
+library(caret)
+library(lattice)
+grid <- expand.grid(.cp=0.001)
+set.seed(13)
+control <- trainControl(method="cv", number=10)
+fit.rpart <- train(Survived~., data=df, method="rpart", metric="Kappa", trControl=control,tuneGrid=grid,na.action = na.pass)
+fit.rpart
+```
+
+### show graphical view of our model that show the accuracy according to the complexity parameter.
+```{r}
+plot(fit.rpart)
+```
+
+![Image of github's cat](/prediction3/photo1.PNG)
+
+### we predict the rpart model on the new_df data set, in the prediction process we pass the na fields in the data set, because the prediction does not succedd with na fields. this prediction is in order to predict the test.csv file. 
+```{r}
+new_pred_rpart<- predict(fit.rpart,new_df,na.action = na.pass)
+```
+
+### show how much passengers survived and died according to our model based on rpart algorhitm.
+```{r}
+plot(new_pred_rpart)
+```
+
+![Image of github's cat](/prediction3/photo2.PNG)
+
+
+# code file reference and excel file reference
+
+[link to code!](https://github.com/achiadg/ex2/tree/master/prediction3/prediction3.Rmd)
+
+[link to output!](https://github.com/achiadg/ex2/tree/master/prediction3/output.csv)
+
+# print screen of the prediction score
+
+![Image of github's cat](/prediction3/score.PNG)
