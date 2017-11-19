@@ -285,12 +285,6 @@ library(e1071)
 nb_model <- naiveBayes(Survived~.,data = train)
 nb_model
 ```
-
-
-```{r}
-plot(fit.gbm)
-``` 
-
 ## we predict the naive bayes model on the test data set, in the prediction process we pass the na fields in the data set, because the prediction does not succedd with na fields.
 this prediction is in order to train our model, and to get better results.
 ```{r}
@@ -340,7 +334,7 @@ nb_model$xlevels[["Cabin"]] <- union(nb_model$xlevels[["Cabin"]], levels(new_df$
 ```
 
 
-## we predict the naive bayes model on the new_df data set, in the prediction process we pass the na fields in the data set, because the prediction does not succedd with na fields. ### this prediction is in order to predict the test.csv file. 
+## we predict the naive bayes model on the new_df data set, in the prediction process we pass the na fields in the data set, because the prediction does not succedd with na fields. this prediction is in order to predict the test.csv file. 
 ```{r}
 new_pred_nb_model<- predict(nb_model,new_df,na.action = na.pass)
 ```
