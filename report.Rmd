@@ -283,6 +283,7 @@ we didnt need to set some more parameters.
 #install.packages('e1071')
 #load e1071 library and invoke naiveBayes method
 library(e1071)
+set.seed(13)
 nb_model <- naiveBayes(Survived~.,data = train)
 nb_model
 ```
