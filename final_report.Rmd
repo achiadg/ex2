@@ -107,13 +107,13 @@ plot(fit.c50)
 ```
 ![Image of github's cat](/prediction1/photo3.PNG)
 
-## show graphical view of our model that show the accuracy according to number of max tree depth.
+## show graphical view of our model that show the accuracy according to the complexity parameter.
 ```{r}
 plot(fit.rpart)
 ```
 ![Image of github's cat](/prediction1/photo4.PNG)
 
-## show graphical view of our model that show the accuracy according to the complexity parameter.
+## show graphical view of our model that show the accuracy according to number of max tree depth.
 ```{r}
 plot(fit.gbm)
 ```
@@ -448,7 +448,7 @@ fit.rpart <- train(Survived~., data=df, method="rpart", metric="Kappa", trContro
 fit.rpart
 ```
 
-## show graphical view of our model that show the accuracy according to number of max tree depth.
+## show graphical view of our model that show the accuracy according to the complexity parameter.
 ```{r}
 plot(fit.rpart)
 ```
