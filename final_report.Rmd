@@ -165,7 +165,7 @@ new_df$pred_majority<-as.factor(ifelse(new_pred_c50=='1' & new_pred_rpart=='1','
 
 ```
 
-### show how much passengers survived and died according to our model.
+### show how much passengers survived and died according to our model use majority vote decision.
 ```{r}
 plot(new_df$pred_majority)
 ```
