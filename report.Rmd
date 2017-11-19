@@ -3,11 +3,6 @@ title: "final_report"
 output: html_document
 ---
 
----
-title: "majority-vote"
-output: html_document
----
-
 # Our Best Score is:
 
 location:2373
@@ -18,6 +13,10 @@ view: Achiad Gelerenter
 
 ![Image of github's cat](/Titanic/MyBestScore.PNG)
 
+---
+title: "majority-vote"
+output: html_document
+---
 
 # The preceding description
 firstly we read train.csv into dataframe and we used str to identify data types and
@@ -26,13 +25,13 @@ convert Survived column and Pclass column to factors, remove unreleavant feature
 ## R markdown for majority vote
 ### setup
 ```{r setup}
-knitr::opts_knit$set(root.dir = 'C:/Users/àçéòã/Desktop/data science/ass2/prediction1')
+knitr::opts_knit$set(root.dir = 'C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/prediction1')
 getwd()
 ```
 
 ### read train.csv into dataframe
 ```{r}
-df <- read.csv("C:/Users/àçéòã/Desktop/data science/ass2/Titanic/train.csv",na.strings = "")
+df <- read.csv("C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/Titanic/train.csv",na.strings = "")
 ```
 
 ### using str to identify data types
@@ -90,7 +89,7 @@ qplot(x=value,data=df_tidy_numerics,fill=Survived) + facet_grid(~feature,scales=
 
 ### load the test file, with na as ""
 ```{r}
-new_df <-read.csv('C:/Users/àçéòã/Desktop/data science/ass2/Titanic/test.csv',na.strings = "")
+new_df <-read.csv('C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/Titanic/test.csv',na.strings = "")
 ```
 
 
@@ -190,13 +189,13 @@ we also split the data into train and test data sets.
 ## R markdown for majority vote
 ### setup
 ```{r setup}
-knitr::opts_knit$set(root.dir = 'C:/Users/àçéòã/Desktop/data science/ass2/prediction2')
+knitr::opts_knit$set(root.dir = 'C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/prediction2')
 getwd()
 ```
 
 ### read train.csv into dataframe
 ```{r}
-df <- read.csv("C:/Users/àçéòã/Desktop/data science/ass2/Titanic/train.csv",na.strings = "")
+df <- read.csv("C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/Titanic/train.csv",na.strings = "")
 ```
 
 ### using str to identify data types
@@ -254,7 +253,7 @@ qplot(x=value,data=df_tidy_numerics,fill=Survived) + facet_grid(~feature,scales=
 
 ### load the test file, with na as ""
 ```{r}
-new_df <-read.csv('C:/Users/àçéòã/Desktop/data science/ass2/Titanic/test.csv',na.strings = "")
+new_df <-read.csv('C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/Titanic/test.csv',na.strings = "")
 ```
 
 ### Model Creation
@@ -320,13 +319,13 @@ convert Survived column and Pclass column to factors, remove unreleavant feature
 ## R markdown for majority vote
 ### setup
 ```{r setup}
-knitr::opts_knit$set(root.dir = 'C:/Users/àçéòã/Desktop/data science/ass2/prediction1')
+knitr::opts_knit$set(root.dir = 'C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/prediction1')
 getwd()
 ```
 
 ### read train.csv into dataframe
 ```{r}
-df <- read.csv("C:/Users/àçéòã/Desktop/data science/ass2/Titanic/train.csv",na.strings = "")
+df <- read.csv("C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/Titanic/train.csv",na.strings = "")
 ```
 
 ### using str to identify data types
@@ -384,7 +383,7 @@ qplot(x=value,data=df_tidy_numerics,fill=Survived) + facet_grid(~feature,scales=
 
 ### load the test file, with na as ""
 ```{r}
-new_df <-read.csv('C:/Users/àçéòã/Desktop/data science/ass2/Titanic/test.csv',na.strings = "")
+new_df <-read.csv('C:/Users/Ã Ã§Ã©Ã²Ã£/Desktop/data science/ass2/Titanic/test.csv',na.strings = "")
 ```
 
 
