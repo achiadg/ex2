@@ -133,12 +133,12 @@ plot(fit.c50)
 
 ![Image of github's cat](/prediction1/photo3.PNG)
 
-### show graphical view of our rpart model that show the accuracy according to the complexity parameter.
+### show graphical view of our rpart model that show the accuracy according to the max tree depth.
 ```{r}
 plot(fit.rpart)
 ```
 
-![Image of github's cat](/prediction3/photo1.PNG)
+![Image of github's cat](/prediction1/photo4.PNG)
 
 ### show graphical view of our gbm model that show the accuracy according to the shrink parameter.
 ```{r}
