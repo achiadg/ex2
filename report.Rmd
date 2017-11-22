@@ -133,7 +133,7 @@ plot(fit.c50)
 
 ![Image of github's cat](/prediction1/photo3.PNG)
 
-### show graphical view of our rpart model that show the accuracy according to the max tree depth.
+### show graphical view of our rpart model that show the accuracy according to the complexity parameter.
 ```{r}
 plot(fit.rpart)
 ```
